@@ -17,8 +17,51 @@
             overflow: hidden;
         }
 
-        img#icon {
+        div#icon {
+            width: 58px;
+            height: 58px;
+            position: absolute;
+            background-color: red;
+            background-size: 100% 100%;
+            border-radius: 50%;
+            background-image: url("https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg");
             cursor: grab;
+            border: 2px rgb(84, 134, 84) solid;
+            box-shadow: 0px 0px 10px 2px green;
+            display: none;
+        }
+
+        div#content {
+            width: 330px;
+            height: 390px;
+            background-color: rgb(63, 112, 63);
+            display: flex;
+            flex-direction: column;
+            scale: 0.8;
+            
+            div#profile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 12px;
+
+                h1, h2 {
+                    font-weight: bold;
+                    font-size: 1.3em;
+                    color: #ffffff;
+                    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+                    font-family: 'Roboto', sans-serif;
+                }
+
+                img {
+                    width: 58px;
+                    height: 58px;
+                    background-color: red;
+                    background-size: 100% 100%;
+                    border-radius: 50%;
+                    background-image: url("https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg");
+                }
+            }
         }
     </style>
 </head>
@@ -26,6 +69,51 @@
     <div id="icon"></div>
     
     <div id="content">
+        <div id="profile">
+            <div>
+                <img src="https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg" alt="icon">
+            </div>
+
+            <div style="display: flex; flex-direction: column; margin-left: 12px;">
+                <h1>ShadowOffsets</h1>
+                <h2>MobControl Mod Menu</h2>
+            </div>
+        </div>
     </div>
+
+    <script>
+        const icon = document.getElementById("icon");
+        const content = document.getElementById("content");
+
+        icon.addEventListener("click", (_) => {
+            icon.style.display = "none";
+            content.style.display = "flex";
+        });
+
+        /* DRAG */
+        let drag = false, ox = 0, oy = 0;
+
+        icon.addEventListener("mousedown", e => {
+            drag = true;
+            ox = e.offsetX;
+            oy = e.offsetY;
+        });
+
+        document.addEventListener("mousemove", e => {
+            if (!drag) return;
+            icon.style.left = (e.clientX - ox) + "px";
+            icon.style.top = (e.clientY - oy) + "px";
+        });
+
+        document.addEventListener("mouseup", () => drag = false);
+
+        /* COLLAPSE */
+        document.querySelectorAll(".collapse-header").forEach(h => {
+            h.onclick = () => {
+                const c = h.nextElementSibling;
+                c.style.display = c.style.display === "block" ? "none" : "block";
+            };
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mod Menu</title>
+
+    <style>
+        /* RESET */
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        /* BOLINHA */
+        #menuIcon {
+            position: fixed;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ff004c, #b00034);
+            box-shadow: 0 0 15px rgba(255, 0, 76, .8);
+            bottom: 120px;
+            right: 20px;
+            cursor: grab;
+            z-index: 9999;
+        }
+
+        /* FUNDO */
+        #menuOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+        }
+
+        /* MENU */
+        #menu {
+            width: 320px;
+            height: 420px;
+            background: #0b0b0b;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 12px;
+            font-weight: bold;
+            background: #000;
+            border-bottom: 1px solid #222;
+        }
+
+        /* SCROLL */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #222;
+            cursor: pointer;
+            color: #ff004c;
+        }
+
+        /* CATEGORY */
+        .category {
+            margin-top: 12px;
+            padding: 6px;
+            background: #111;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        /* BUTTON */
+        .btn {
+            margin-top: 8px;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            background: #ff004c;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* TOGGLE */
+        .toggle {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .toggle input {
+            margin-right: 6px;
+        }
+
+        /* SWITCH */
+        .switch {
+            position: relative;
+            width: 42px;
+            height: 22px;
+            margin-left: auto;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .sliderSwitch {
+            position: absolute;
+            inset: 0;
+            background: #555;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .sliderSwitch::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: .2s;
+        }
+
+        .switch input:checked+.sliderSwitch {
+            background: #ff004c;
+        }
+
+        .switch input:checked+.sliderSwitch::before {
+            transform: translateX(20px);
+        }
+
+        /* PROGRESS */
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 6px;
+            margin-top: 6px;
+        }
+
+        .progress span {
+            display: block;
+            height: 100%;
+            width: 40%;
+            background: #ff004c;
+            border-radius: 6px;
+        }
+
+        /* SLIDER */
+        input[type="range"] {
+            width: 100%;
+        }
+
+        /* INPUT */
+        input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        /* COLLAPSE */
+        .collapse {
+            background: #111;
+            margin-top: 8px;
+            border-radius: 6px;
+        }
+
+        .collapse-header {
+            padding: 6px;
+            cursor: pointer;
+        }
+
+        .collapse-content {
+            display: none;
+            padding: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BOLINHA -->
+    <div id="menuIcon"></div>
+
+    <!-- MENU -->
+    <div id="menuOverlay">
+        <div id="menu">
+            <div class="header">MOD MENU v1.0</div>
+
+            <div class="content">
+
+                <div class="category">Player</div>
+
+                <div class="toggle">
+                    <label>God Mode</label>
+                    <div class="switch">
+                        <input type="checkbox">
+                        <span class="sliderSwitch"></span>
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <span></span>
+                </div>
+
+                <label>Speed</label>
+                <input type="range" min="0" max="100">
+
+                <div class="category">Actions</div>
+
+                <button class="btn" onclick="alert('Button clicked')">Do Action</button>
+
+                <label>Nickname</label>
+                <input type="text" placeholder="Enter name">
+
+                <div class="collapse">
+                    <div class="collapse-header">Extra Options</div>
+                    <div class="collapse-content">
+                        <div class="toggle">
+                            <label>Unlimited Ammo</label>
+                            <input type="checkbox">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer" onclick="closeMenu()">CLOSE</div>
+        </div>
+    </div>
+
+    <script>
+        /* ABRIR / FECHAR */
+        const icon = document.getElementById("menuIcon");
+        const overlay = document.getElementById("menuOverlay");
+
+        icon.onclick = () => {
+            overlay.style.display = "flex";
+            icon.style.display = "none";
+        };
+
+        function closeMenu() {
+            overlay.style.display = "none";
+            icon.style.display = "block";
+        }
+
+        /* DRAG */
+        let drag = false, ox = 0, oy = 0;
+
+        icon.addEventListener("mousedown", e => {
+            drag = true;
+            ox = e.offsetX;
+            oy = e.offsetY;
+        });
+
+        document.addEventListener("mousemove", e => {
+            if (!drag) return;
+            icon.style.left = (e.clientX - ox) + "px";
+            icon.style.top = (e.clientY - oy) + "px";
+        });
+
+        document.addEventListener("mouseup", () => drag = false);
+
+        /* COLLAPSE */
+        document.querySelectorAll(".collapse-header").forEach(h => {
+            h.onclick = () => {
+                const c = h.nextElementSibling;
+                c.style.display = c.style.display === "block" ? "none" : "block";
+            };
+        });
+    </script>
+
+</body>
+
+</html>

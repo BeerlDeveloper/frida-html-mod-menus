@@ -179,3 +179,52 @@ Todos os componentes:
 
 Este README serve como guia rápido de implementação.
 
+# Example
+
+```html
+<div class="category">Player</div>
+
+<div class="row">
+    <span>God Mode</span>
+    <label class="switch">
+        <input type="checkbox">
+        <span class="sliderSwitch"></span>
+    </label>
+</div>
+
+<div class="progress">
+    <span></span>
+</div>
+
+<div class="slider-row">
+    <span>Speed</span>
+    <input type="range" min="0" max="100">
+</div>
+
+<div class="category">Inputs</div>
+
+<!-- INT INPUT -->
+<input type="number" step="1" placeholder="Integer value">
+
+<!-- FLOAT INPUT -->
+<input type="number" step="0.01" placeholder="Float value">
+
+<div class="category">Options</div>
+
+<select>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+    <option>Extreme</option>
+</select>
+
+<div class="collapse">
+    <div class="collapse-header">Advanced</div>
+    <div class="collapse-content">
+        <div class="row">
+            <span>Unlimited Ammo</span>
+            <input type="checkbox">
+        </div>
+    </div>
+</div>
+```

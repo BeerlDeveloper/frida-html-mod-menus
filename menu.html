@@ -255,6 +255,13 @@ select {
     padding: 6px;
     font-size: 14px;
 }
+
+.collapse-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s ease;
+}
+
 </style>
 </head>
 
@@ -267,10 +274,10 @@ select {
 
         <!-- HEADER -->
         <div class="header">
-            <img src="https://i.imgur.com/1X6R8xH.png">
+            <img src="https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg">
             <div class="info">
-                <div class="username">Carlos</div>
-                <div class="modname">Ultra Mod Menu</div>
+                <div class="username">ShadowOffsets</div>
+                <div class="modname">MobControl - Mod Menu</div>
             </div>
         </div>
 
@@ -329,38 +336,25 @@ select {
 </div>
 
 <script>
-const icon = document.getElementById("menuIcon");
+const button = document.getElementById("menuIcon");
 const overlay = document.getElementById("menuOverlay");
 
-icon.onclick = () => {
+button.onclick = () => {
     overlay.style.display = "flex";
-    icon.style.display = "none";
-};
-
-function closeMenu() {
-    overlay.style.display = "none";
-    icon.style.display = "block";
-};
-</script>
-
-<script>
-const button = document.getElementById("menuIcon");
-
-let offsetX = 0;
-let offsetY = 0;
-let isDragging = false;
-let startTime = 0;
-
-/* ABRIR / FECHAR MENU */
-function showMenu() {
     button.style.display = "none";
-    overlay.style.display = "flex";
-}
+};
 
 function closeMenu() {
     overlay.style.display = "none";
     button.style.display = "block";
-}
+};
+</script>
+
+<script>
+let offsetX = 0;
+let offsetY = 0;
+let isDragging = false;
+let startTime = 0;
 
 /* DIFERENCIA CLICK DE DRAG */
 function handleClickOrDrag() {
@@ -436,6 +430,22 @@ window.addEventListener("mouseup", endDrag);
 button.addEventListener("touchstart", startDrag);
 window.addEventListener("touchmove", onDrag, { passive: false });
 window.addEventListener("touchend", endDrag);
+</script>
+
+<script>
+/* COLLAPSE SYSTEM */
+document.querySelectorAll(".collapse-header").forEach(header => {
+    header.addEventListener("click", () => {
+        const content = header.nextElementSibling;
+
+        if (!content) return;
+
+        content.style.display =
+            content.style.display === "block" ? "none" : "block";
+
+        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+    });
+});
 </script>
 
 

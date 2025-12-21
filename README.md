@@ -10,7 +10,9 @@ do mod menu em HTML + CSS + JavaScript puro.
 Usado apenas para organização visual do menu.
 
 HTML:
+```html
 <div class="category">Player</div>
+```
 
 Observações:
 - Não precisa de JavaScript
@@ -24,6 +26,7 @@ Observações:
 Usado para ativar ou desativar funções.
 
 HTML:
+```html
 <div class="row">
     <span>God Mode</span>
     <label class="switch">
@@ -31,6 +34,7 @@ HTML:
         <span class="sliderSwitch"></span>
     </label>
 </div>
+```
 
 JS (ler estado):
 const enabled = document.getElementById("godmode").checked;
@@ -47,10 +51,12 @@ Uso comum:
 Usado para controlar valores variáveis.
 
 HTML:
+```html
 <div class="slider-row">
     <span>Speed</span>
     <input type="range" id="speed" min="0" max="100" value="50">
 </div>
+```
 
 JS (ler valor):
 const speedValue = document.getElementById("speed").value;
@@ -68,7 +74,9 @@ Uso comum:
 Usado para receber números inteiros.
 
 HTML:
+```html
 <input type="number" id="intValue" step="1" placeholder="Integer value">
+```
 
 JS (ler valor):
 const intValue = parseInt(document.getElementById("intValue").value);
@@ -85,7 +93,9 @@ Uso comum:
 Usado para valores decimais.
 
 HTML:
+```html
 <input type="number" id="floatValue" step="0.01" placeholder="Float value">
+```
 
 JS (ler valor):
 const floatValue = parseFloat(document.getElementById("floatValue").value);
@@ -102,9 +112,11 @@ Uso comum:
 Usado para executar ações.
 
 HTML:
+```html
 <button class="btn" onclick="applySettings()">
     Apply Settings
 </button>
+```
 
 JS:
 function applySettings() {
@@ -123,6 +135,7 @@ Uso comum:
 Usado para esconder opções avançadas.
 
 HTML:
+```html
 <div class="collapse">
     <div class="collapse-header">Advanced</div>
     <div class="collapse-content">
@@ -132,8 +145,11 @@ HTML:
         </div>
     </div>
 </div>
+```
 
 JS (necessário):
+
+```js
 document.querySelectorAll(".collapse-header").forEach(header => {
     header.addEventListener("click", () => {
         const content = header.nextElementSibling;
@@ -144,6 +160,7 @@ document.querySelectorAll(".collapse-header").forEach(header => {
             : content.scrollHeight + "px";
     });
 });
+```
 
 Uso comum:
 - Opções avançadas

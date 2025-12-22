@@ -23,12 +23,11 @@ body {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #ff004c, #9e0030);
-    box-shadow: 0 0 15px rgba(255,0,76,.8);
-    bottom: 120px;
-    right: 20px;
+    box-shadow: 0 0 15px 2px green;
     cursor: grab;
     z-index: 9999;
+    opacity: 0.5;
+    background-image: url("https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg");
 }
 
 /* OVERLAY */
@@ -283,27 +282,8 @@ select {
 
         <div class="content">
 
-            <div class="collapse">
-                <div class="collapse-header">User</div>
-                <div class="collapse-content">
-                    <div class="row">
-                        <span>Gold</span>
-                        <input type="number" id="intValue" step="1" placeholder="G  ">
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="collapse">
-                <div class="collapse-header">Game</div>
-                <div class="collapse-content">
-                    <div class="row">
-                        <span>Unlimited Ammo</span>
-                        <input type="checkbox">
-                    </div>
-                </div>
-            </div>
-
+            
+            
         </div>
 
         <div class="footer" onclick="closeMenu()">CLOSE</div>
@@ -322,7 +302,12 @@ button.onclick = () => {
 function closeMenu() {
     overlay.style.display = "none";
     button.style.display = "block";
+
+    setTimeout(() => {
+        button.style.opacity = "0.5";
+    }, 2_000);
 };
+
 </script>
 
 <script>

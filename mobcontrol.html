@@ -23,13 +23,18 @@ body {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #ff004c, #9e0030);
-    box-shadow: 0 0 15px rgba(255,0,76,.8);
-    bottom: 120px;
-    right: 20px;
+    box-shadow: 0 0 15px 2px green;
     cursor: grab;
     z-index: 9999;
+    opacity: 0.5;
+
+    background-image: url("https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
 }
+
 
 /* OVERLAY */
 #menuOverlay {
@@ -81,7 +86,7 @@ body {
 
 .header .modname {
     font-size: 12px;
-    color: #ff004c;
+    color: var(--accent);
 }
 
 /* CONTENT */
@@ -92,7 +97,7 @@ body {
 
     /* Firefox */
     scrollbar-width: thin;
-    scrollbar-color: #ff004c #111;
+    scrollbar-color: var(--accent) #111;
 }
 
 /* Chrome / Edge */
@@ -106,7 +111,7 @@ body {
 }
 
 .content::-webkit-scrollbar-thumb {
-    background: linear-gradient(#ff004c, #9e0030);
+    background: linear-gradient(var(--accent), var(--accent-dark));
     border-radius: 10px;
 }
 
@@ -116,7 +121,7 @@ body {
     text-align: center;
     border-top: 1px solid #222;
     cursor: pointer;
-    color: #ff004c;
+    color: var(--accent);
     font-weight: bold;
 }
 
@@ -135,7 +140,7 @@ body {
     padding: 8px;
     border: none;
     border-radius: 6px;
-    background: #ff004c;
+    background: var(--accent);
     color: #fff;
     cursor: pointer;
 }
@@ -145,8 +150,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 8px;
+    gap: 10px;
 }
+
+.row > span {
+    min-width: 110px;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.row input,
+.row select {
+    flex: 1;
+}
+
 
 /* SWITCH */
 .switch {
@@ -183,7 +200,7 @@ body {
 }
 
 .switch input:checked + .sliderSwitch {
-    background: #ff004c;
+    background: var(--accent);
 }
 
 .switch input:checked + .sliderSwitch::before {
@@ -203,7 +220,7 @@ body {
     display: block;
     height: 100%;
     width: 60%;
-    background: #ff004c;
+    background: var(--accent);
     border-radius: 6px;
 }
 
@@ -235,32 +252,156 @@ select {
     border: none;
     background: #1a1a1a;
     color: #fff;
+    outline: none;
 }
+
+input:focus,
+select:focus {
+    box-shadow: 0 0 0 1px var(--accent)55;
+}
+
 
 /* COLLAPSE */
 .collapse {
     background: #111;
-    margin-top: 8px;
-    border-radius: 6px;
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .collapse-header {
-    padding: 6px;
+    padding: 8px;
     cursor: pointer;
     font-weight: bold;
-}
-
-.collapse-content {
-    display: none;
-    padding: 6px;
-    font-size: 14px;
+    text-align: center;
+    background: #1b1b1b;
+    color: var(--accent);
 }
 
 .collapse-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height .25s ease;
+    transition: max-height .3s ease;
+    padding: 0 8px;
 }
+
+.collapse.open > .collapse-content {
+    padding: 8px;
+}
+
+/* SECTION */
+
+.section {
+    margin-top: 14px;
+    padding: 6px;
+    background: linear-gradient(90deg, var(--accent), #000);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+/* MULTI SELECT + BOX */
+.multi-select {
+    background: #141414;
+    border: 1px solid #1f1f1f;
+    color: #fff;
+}
+
+.multi-select option:checked {
+    background: linear-gradient(
+        90deg,
+        var(--accent-dark),
+        var(--accent)
+    );
+}
+
+/* REMOVE ARROWS - NUMBER INPUT */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+/* CUSTOM CHECKBOX */
+.checkbox {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.checkbox input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox span {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.checkbox span::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid #00ff88;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transition: .2s;
+}
+
+.checkbox input:checked + span {
+    background: #00aa55;
+    border-color: #00ff88;
+}
+
+.checkbox input:checked + span::after {
+    transform: rotate(45deg) scale(1);
+}
+
+/* COLOR THEME */
+:root {
+    --accent: #00ff88;
+    --accent-dark: #00aa55;
+    --accent-soft: #00ff8833;
+}
+
+/* COMMENT / NOTE */
+.comment {
+    margin-top: 6px;
+    padding: 6px 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #aaffcc;
+    background: #0f1f17;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    opacity: 0.9;
+}
+
+.comment.warn {
+    border-left-color: #ffaa00;
+    background: #1f180f;
+    color: #ffe1aa;
+}
+
+.comment.muted {
+    opacity: 0.6;
+}
+
 
 </style>
 </head>
@@ -283,19 +424,51 @@ select {
 
         <div class="content">
 
-            <div class="collapse">
+
+            <div class="collapse" id="user_">
                 <div class="collapse-header">User</div>
                 <div class="collapse-content" id="user">
-                    
+
+                    <div class="section">Tutorials</div> 
+                    <div class="comment warn">Click to mark as completed or in progress.</div class="comment">
+
+                    <select multiple class="multi-select" id="user_tutorial_types" onchange="(e) => wapi.user_set_tutorials(Array.from(e.target.selectedOptions).map((o) => (+o.value)))">
+                        <option value="1">Play</option>
+                        <option value="2">Talent</option>       
+                        <option value="3">GiftBox</option>
+                        <option value="4">Reroll</option>
+                        <option value="5">Facility</option>
+                        <option value="6">KingEquip</option>
+                        <option value="7">SummonPoint</option>
+                        <option value="8">SummonKing</option>
+                        <option value="9">RelicsTalent</option>
+                        <option value="10">CleanRelics</option>
+                        <option value="11">CleanRelicsEnd</option>
+                        <option value="12">DressStone</option>
+                        <option value="13">EquipUpgrade</option>
+                    </select>
+
+                    <div class="section">Economy</div>
+
                 </div>
             </div>
 
-            <div class="collapse">
+            <div class="collapse" id="game_">
                 <div class="collapse-header">Game</div>
                 <div class="collapse-content">
                     <div class="row">
-                        <span>Unlimited Ammo</span>
-                        <input type="checkbox">
+                        <span>Coin</span>
+                        <input type="number" step="1" placeholder="Integer value">
+                    </div>
+
+                    <div class="row">
+                        <span>Health</span>
+                        <input type="number" step="1" placeholder="Integer value">
+                    </div>
+
+                    <div class="row">
+                        <span>Shield</span>
+                        <input type="number" step="1" placeholder="Integer value">
                     </div>
                 </div>
             </div>
@@ -318,7 +491,12 @@ button.onclick = () => {
 function closeMenu() {
     overlay.style.display = "none";
     button.style.display = "block";
+
+    setTimeout(() => {
+        button.style.opacity = "0.5";
+    }, 2_000);
 };
+
 </script>
 
 <script>
@@ -404,21 +582,30 @@ window.addEventListener("touchend", endDrag);
 </script>
 
 <script>
-/* COLLAPSE SYSTEM */
-document.querySelectorAll(".collapse-header").forEach(header => {
-    header.addEventListener("click", () => {
-        const content = header.nextElementSibling;
+document.addEventListener("click", e => {
+    const header = e.target.closest(".collapse-header");
+    if (!header) return;
 
-        if (!content) return;
+    const collapse = header.parentElement;
+    const content = collapse.querySelector(".collapse-content");
 
-        content.style.display =
-            content.style.display === "block" ? "none" : "block";
+    collapse.classList.toggle("open");
 
-        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
-    });
+    if (collapse.classList.contains("open")) {
+        content.style.maxHeight = content.scrollHeight + "px";
+    } else {
+        content.style.maxHeight = "0px";
+    }
+
+    // 🔁 Recalcula o pai (suporta collapse dentro de collapse)
+    let parent = collapse.parentElement.closest(".collapse");
+    while (parent) {
+        const parentContent = parent.querySelector(".collapse-content");
+        parentContent.style.maxHeight = parentContent.scrollHeight + "px";
+        parent = parent.parentElement.closest(".collapse");
+    }
 });
 </script>
-
 
 </body>
 </html>

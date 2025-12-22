@@ -568,6 +568,10 @@ function endDrag() {
 
     isDragging = false;
     handleClickOrDrag();
+
+    setTimeout(() => {
+        button.style.opacity = "0.5";
+    }, 2_000);
 }
 
 /* EVENTOS MOUSE */

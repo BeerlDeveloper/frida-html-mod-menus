@@ -432,7 +432,7 @@ input[type=number] {
                     <div class="section">Tutorials</div> 
                     <div class="comment warn">Click to mark as completed or in progress.</div class="comment">
 
-                    <select multiple class="multi-select" id="user_tutorial_types" onchange="(e) => wapi.user_set_tutorials(Array.from(e.target.selectedOptions).map((o) => (+o.value)))">
+                    <select multiple class="multi-select" id="user_tutorial_types" onchange="wapi.user_set_tutorials(Array.from(event.target.selectedOptions).map((o) => (+o.value)))">
                         <option value="1">Play</option>
                         <option value="2">Talent</option>       
                         <option value="3">GiftBox</option>

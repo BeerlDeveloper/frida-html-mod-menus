@@ -1,615 +1,649 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mod Menu</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mod Menu</title>
 
-<style>
-* {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body {
-    margin: 0;
-    background: transparent;
-    overflow: hidden;
-}
+        body {
+            margin: 0;
+            background: transparent;
+            overflow: hidden;
+        }
 
-/* ICON */
-#menuIcon {
-    position: fixed;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    box-shadow: 0 0 15px 2px green;
-    cursor: grab;
-    z-index: 9999;
-    opacity: 0.5;
+        /* ICON */
+        #menuIcon {
+            position: fixed;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            box-shadow: 0 0 15px 2px green;
+            cursor: grab;
+            z-index: 9999;
+            opacity: 0.5;
 
-    background-image: url("https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-}
-
-
-/* OVERLAY */
-#menuOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.45);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9998;
-}
-
-/* MENU */
-#menu {
-    width: 340px;
-    height: 460px;
-    background: #0b0b0b;
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-}
-
-/* HEADER */
-.header {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    gap: 10px;
-    border-bottom: 1px solid #222;
-    background: #000;
-}
-
-.header img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-}
-
-.header .info {
-    display: flex;
-    flex-direction: column;
-}
-
-.header .username {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.header .modname {
-    font-size: 12px;
-    color: var(--accent);
-}
-
-/* CONTENT */
-.content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-
-    /* Firefox */
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) #111;
-}
-
-/* Chrome / Edge */
-.content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.content::-webkit-scrollbar-track {
-    background: #111;
-    border-radius: 10px;
-}
-
-.content::-webkit-scrollbar-thumb {
-    background: linear-gradient(var(--accent), var(--accent-dark));
-    border-radius: 10px;
-}
-
-/* FOOTER */
-.footer {
-    padding: 10px;
-    text-align: center;
-    border-top: 1px solid #222;
-    cursor: pointer;
-    color: var(--accent);
-    font-weight: bold;
-}
-
-/* CATEGORY */
-.category {
-    margin-top: 12px;
-    padding: 6px;
-    background: #111;
-    border-radius: 6px;
-    font-weight: bold;
-}
-
-/* BUTTON */
-.btn {
-    margin-top: 8px;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    background: var(--accent);
-    color: #fff;
-    cursor: pointer;
-}
-
-/* ROW */
-.row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.row > span {
-    min-width: 110px;
-    font-size: 15px;
-    white-space: nowrap;
-}
-
-.row input,
-.row select {
-    flex: 1;
-}
+            background-image: url("https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
 
 
-/* SWITCH */
-.switch {
-    position: relative;
-    width: 42px;
-    height: 22px;
-}
+        /* OVERLAY */
+        #menuOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+        }
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+        /* MENU */
+        #menu {
+            width: 340px;
+            height: 460px;
+            background: #0b0b0b;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
 
-.sliderSwitch {
-    position: absolute;
-    inset: 0;
-    background: #555;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: .2s;
-}
+        /* HEADER */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 10px;
+            border-bottom: 1px solid #222;
+            background: #000;
+        }
 
-.sliderSwitch::before {
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background: #fff;
-    border-radius: 50%;
-    top: 2px;
-    left: 2px;
-    transition: .2s;
-}
+        .header img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+        }
 
-.switch input:checked + .sliderSwitch {
-    background: var(--accent);
-}
+        .header .info {
+            display: flex;
+            flex-direction: column;
+        }
 
-.switch input:checked + .sliderSwitch::before {
-    transform: translateX(20px);
-}
+        .header .username {
+            font-weight: bold;
+            font-size: 14px;
+        }
 
-/* PROGRESS */
-.progress {
-    width: 100%;
-    height: 8px;
-    background: #333;
-    border-radius: 6px;
-    margin-top: 6px;
-}
+        .header .modname {
+            font-size: 12px;
+            color: var(--accent);
+        }
 
-.progress span {
-    display: block;
-    height: 100%;
-    width: 60%;
-    background: var(--accent);
-    border-radius: 6px;
-}
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
 
-/* SLIDER + TEXT */
-.slider-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-}
+            /* Firefox */
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) #111;
+        }
 
-.slider-row span {
-    width: 80px;
-    font-size: 13px;
-}
+        /* Chrome / Edge */
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
 
-input[type="range"] {
-    flex: 1;
-}
+        .content::-webkit-scrollbar-track {
+            background: #111;
+            border-radius: 10px;
+        }
 
-/* INPUTS */
-input[type="text"],
-input[type="number"],
-select {
-    width: 100%;
-    padding: 6px;
-    margin-top: 6px;
-    border-radius: 6px;
-    border: none;
-    background: #1a1a1a;
-    color: #fff;
-    outline: none;
-}
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent), var(--accent-dark));
+            border-radius: 10px;
+        }
 
-input:focus,
-select:focus {
-    box-shadow: 0 0 0 1px var(--accent)55;
-}
+        /* FOOTER */
+        .footer {
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #222;
+            cursor: pointer;
+            color: var(--accent);
+            font-weight: bold;
+        }
 
+        /* CATEGORY */
+        .category {
+            margin-top: 12px;
+            padding: 6px;
+            background: #111;
+            border-radius: 6px;
+            font-weight: bold;
+        }
 
-/* COLLAPSE */
-.collapse {
-    background: #111;
-    margin-top: 10px;
-    border-radius: 8px;
-    overflow: hidden;
-}
+        /* BUTTON */
+        .btn {
+            margin-top: 8px;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+        }
 
-.collapse-header {
-    padding: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    text-align: center;
-    background: #1b1b1b;
-    color: var(--accent);
-}
+        /* ROW */
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
 
-.collapse-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .3s ease;
-    padding: 0 8px;
-}
+        .row>span {
+            min-width: 110px;
+            font-size: 15px;
+            white-space: nowrap;
+        }
 
-.collapse.open > .collapse-content {
-    padding: 8px;
-}
-
-/* SECTION */
-
-.section {
-    margin-top: 14px;
-    padding: 6px;
-    background: linear-gradient(90deg, var(--accent), #000);
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    color: var(--accent);
-}
-
-/* MULTI SELECT + BOX */
-.multi-select {
-    background: #141414;
-    border: 1px solid #1f1f1f;
-    color: #fff;
-}
-
-.multi-select option:checked {
-    background: linear-gradient(
-        90deg,
-        var(--accent-dark),
-        var(--accent)
-    );
-}
-
-/* REMOVE ARROWS - NUMBER INPUT */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type=number] {
-    -moz-appearance: textfield; /* Firefox */
-}
-
-/* CUSTOM CHECKBOX */
-.checkbox {
-    position: relative;
-    width: 20px;
-    height: 20px;
-}
-
-.checkbox input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.checkbox span {
-    position: absolute;
-    inset: 0;
-    border-radius: 6px;
-    background: #1a1a1a;
-    border: 1px solid #2e2e2e;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.checkbox span::after {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    width: 6px;
-    height: 10px;
-    border: solid #00ff88;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg) scale(0);
-    transition: .2s;
-}
-
-.checkbox input:checked + span {
-    background: #00aa55;
-    border-color: #00ff88;
-}
-
-.checkbox input:checked + span::after {
-    transform: rotate(45deg) scale(1);
-}
-
-/* COLOR THEME */
-:root {
-    --accent: #00ff88;
-    --accent-dark: #00aa55;
-    --accent-soft: #00ff8833;
-}
-
-/* COMMENT / NOTE */
-.comment {
-    margin-top: 6px;
-    padding: 6px 8px;
-    font-size: 12px;
-    line-height: 1.4;
-    color: #aaffcc;
-    background: #0f1f17;
-    border-left: 3px solid var(--accent);
-    border-radius: 6px;
-    opacity: 0.9;
-}
-
-.comment.warn {
-    border-left-color: #ffaa00;
-    background: #1f180f;
-    color: #ffe1aa;
-}
-
-.comment.muted {
-    opacity: 0.6;
-}
+        .row input,
+        .row select {
+            flex: 1;
+        }
 
 
-</style>
+        /* SWITCH */
+        .switch {
+            position: relative;
+            width: 42px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .sliderSwitch {
+            position: absolute;
+            inset: 0;
+            background: #555;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .sliderSwitch::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: .2s;
+        }
+
+        .switch input:checked+.sliderSwitch {
+            background: var(--accent);
+        }
+
+        .switch input:checked+.sliderSwitch::before {
+            transform: translateX(20px);
+        }
+
+        /* PROGRESS */
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 6px;
+            margin-top: 6px;
+        }
+
+        .progress span {
+            display: block;
+            height: 100%;
+            width: 60%;
+            background: var(--accent);
+            border-radius: 6px;
+        }
+
+        /* SLIDER + TEXT */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .slider-row span {
+            width: 80px;
+            font-size: 13px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+        }
+
+        /* INPUTS */
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 6px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: none;
+            background: #1a1a1a;
+            color: #fff;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            box-shadow: 0 0 0 1px var(--accent)55;
+        }
+
+
+        /* COLLAPSE */
+        .collapse {
+            background: #111;
+            margin-top: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .collapse-header {
+            padding: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            background: #1b1b1b;
+            color: var(--accent);
+        }
+
+        .collapse-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+            padding: 0 8px;
+        }
+
+        .collapse.open>.collapse-content {
+            padding: 8px;
+        }
+
+        /* SECTION */
+
+        .section {
+            margin-top: 14px;
+            padding: 6px;
+            background: linear-gradient(90deg, var(--accent), #000);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* MULTI SELECT + BOX */
+        .multi-select {
+            background: #141414;
+            border: 1px solid #1f1f1f;
+            color: #fff;
+        }
+
+        .multi-select option:checked {
+            background: linear-gradient(90deg,
+                    var(--accent-dark),
+                    var(--accent));
+        }
+
+        /* REMOVE ARROWS - NUMBER INPUT */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+            /* Firefox */
+        }
+
+        /* CUSTOM CHECKBOX */
+        .checkbox {
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .checkbox span {
+            position: absolute;
+            inset: 0;
+            border-radius: 6px;
+            background: #1a1a1a;
+            border: 1px solid #2e2e2e;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .checkbox span::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid #00ff88;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) scale(0);
+            transition: .2s;
+        }
+
+        .checkbox input:checked+span {
+            background: #00aa55;
+            border-color: #00ff88;
+        }
+
+        .checkbox input:checked+span::after {
+            transform: rotate(45deg) scale(1);
+        }
+
+        /* COLOR THEME */
+        :root {
+            --accent: #00ff88;
+            --accent-dark: #00aa55;
+            --accent-soft: #00ff8833;
+        }
+
+        /* COMMENT / NOTE */
+        .comment {
+            margin-top: 6px;
+            padding: 6px 8px;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #aaffcc;
+            background: #0f1f17;
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            opacity: 0.9;
+        }
+
+        .comment.warn {
+            border-left-color: #ffaa00;
+            background: #1f180f;
+            color: #ffe1aa;
+        }
+
+        .comment.muted {
+            opacity: 0.6;
+        }
+    </style>
 </head>
 
 <body>
 
-<div id="menuIcon"></div>
+    <div id="menuIcon"></div>
 
-<div id="menuOverlay">
-    <div id="menu">
+    <div id="menuOverlay">
+        <div id="menu">
 
-        <!-- HEADER -->
-        <div class="header">
-            <img src="https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg">
-            <div class="info">
-                <div class="username">ShadowOffsets</div>
-                <div class="modname">MobControl - Mod Menu</div>
-            </div>
-        </div>
-
-        <div class="content">
-
-
-            <div class="collapse" id="user_">
-                <div class="collapse-header">User</div>
-                <div class="collapse-content" id="user">
-
-                    <div class="section">Tutorials</div> 
-                    <div class="comment warn">Click to mark as completed or in progress.</div class="comment">
-
-                    <select multiple class="multi-select" id="user_tutorial_types" onchange="wapi.user_set_tutorials(Array.from(event.target.selectedOptions).map((o) => (+o.value)))">
-                        <option value="1">Play</option>
-                        <option value="2">Talent</option>       
-                        <option value="3">GiftBox</option>
-                        <option value="4">Reroll</option>
-                        <option value="5">Facility</option>
-                        <option value="6">KingEquip</option>
-                        <option value="7">SummonPoint</option>
-                        <option value="8">SummonKing</option>
-                        <option value="9">RelicsTalent</option>
-                        <option value="10">CleanRelics</option>
-                        <option value="11">CleanRelicsEnd</option>
-                        <option value="12">DressStone</option>
-                        <option value="13">EquipUpgrade</option>
-                    </select>
-
-                    <div class="section">Economy</div>
-
+            <!-- HEADER -->
+            <div class="header">
+                <img
+                    src="https://raw.githubusercontent.com/BeerlDeveloper/frida-html-mod-menus/refs/heads/main/icon.jpg">
+                <div class="info">
+                    <div class="username">ShadowOffsets</div>
+                    <div class="modname">MobControl - Mod Menu</div>
                 </div>
             </div>
 
-            <div class="collapse" id="game_">
-                <div class="collapse-header">Game</div>
-                <div class="collapse-content">
-                    <div class="row">
-                        <span>Coin</span>
-                        <input type="number" step="1" placeholder="Integer value">
-                    </div>
+            <div class="content">
 
-                    <div class="row">
-                        <span>Health</span>
-                        <input type="number" step="1" placeholder="Integer value">
-                    </div>
 
-                    <div class="row">
-                        <span>Shield</span>
-                        <input type="number" step="1" placeholder="Integer value">
+                <div class="collapse" id="user_">
+                    <div class="collapse-header">User</div>
+                    <div class="collapse-content" id="user">
+
+                        <div class="section">Tutorials</div>
+                        <div class="comment warn">Click to mark as completed or in progress.</div class="comment">
+
+                        <select multiple class="multi-select" id="user_tutorial_types"
+                            onchange="wapi.user_set_tutorials(Array.from(event.target.selectedOptions).map((o) => (+o.value)))">
+                            <option value="1">Play</option>
+                            <option value="2">Talent</option>
+                            <option value="3">GiftBox</option>
+                            <option value="4">Reroll</option>
+                            <option value="5">Facility</option>
+                            <option value="6">KingEquip</option>
+                            <option value="7">SummonPoint</option>
+                            <option value="8">SummonKing</option>
+                            <option value="9">RelicsTalent</option>
+                            <option value="10">CleanRelics</option>
+                            <option value="11">CleanRelicsEnd</option>
+                            <option value="12">DressStone</option>
+                            <option value="13">EquipUpgrade</option>
+                        </select>
+
+                        <div class="section">Economy</div>
+
                     </div>
                 </div>
+
+                <div class="collapse" id="game_">
+                    <div class="collapse-header">Game</div>
+                    <div class="collapse-content">
+                        <div class="row">
+                            <span>God Mode</span>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="sliderSwitch"></span>
+                            </label>
+                        </div>
+
+                        <div class="row">
+                            <span>Gold</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'Gold', value: +event.target.value, }))">
+                        </div>
+
+                        <div class="row">
+                            <span>Shield</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'Shield', value: +event.target.value, }))">
+                        </div>
+
+                        <div class="row">
+                            <span>Exp</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'Exp', value: +event.target.value, }))">
+                        </div>
+
+                        <div class="row">
+                            <span>Level</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'Level', value: +event.target.value, }))">
+                        </div>
+
+                        <div class="row">
+                            <span>Health</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'Health', value: +event.target.value, }))">
+                        </div>
+
+                        <div class="row">
+                            <span>Max Health</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'MaxHealth', value: +event.target.value, }))">
+                        </div>
+
+                        <div class="row">
+                            <span>King Health</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'KingHealth', value: +event.target.value, }))">
+                        </div>
+
+                        <div class="row">
+                            <span>King Max Health</span>
+                            <input type="number" step="1" placeholder="Integer value" onchange="wapi.game_set(JSON.stringify({ type: 'KingMaxHealth', value: +event.target.value, }))">
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
+            <div class="footer" onclick="closeMenu()">CLOSE</div>
         </div>
-
-        <div class="footer" onclick="closeMenu()">CLOSE</div>
     </div>
-</div>
 
-<script>
-const button = document.getElementById("menuIcon");
-const overlay = document.getElementById("menuOverlay");
+    <script>
+        const button = document.getElementById("menuIcon");
+        const overlay = document.getElementById("menuOverlay");
 
-button.onclick = () => {
-    overlay.style.display = "flex";
-    button.style.display = "none";
-};
+        button.onclick = () => {
+            overlay.style.display = "flex";
+            button.style.display = "none";
+        };
 
-function closeMenu() {
-    overlay.style.display = "none";
-    button.style.display = "block";
+        function closeMenu() {
+            overlay.style.display = "none";
+            button.style.display = "block";
 
-    setTimeout(() => {
-        button.style.opacity = "0.5";
-    }, 2_000);
-};
+            setTimeout(() => {
+                button.style.opacity = "0.5";
+            }, 2_000);
+        };
 
-</script>
+    </script>
 
-<script>
-let offsetX = 0;
-let offsetY = 0;
-let isDragging = false;
-let startTime = 0;
+    <script>
+        let offsetX = 0;
+        let offsetY = 0;
+        let isDragging = false;
+        let startTime = 0;
 
-/* DIFERENCIA CLICK DE DRAG */
-function handleClickOrDrag() {
-    const elapsedTime = Date.now() - startTime;
-    if (elapsedTime < 200) {
-        showMenu();
-    }
-}
+        /* DIFERENCIA CLICK DE DRAG */
+        function handleClickOrDrag() {
+            const elapsedTime = Date.now() - startTime;
+            if (elapsedTime < 200) {
+                showMenu();
+            }
+        }
 
-/* START DRAG */
-function startDrag(e) {
-    startTime = Date.now();
-    isDragging = true;
+        /* START DRAG */
+        function startDrag(e) {
+            startTime = Date.now();
+            isDragging = true;
 
-    const rect = button.getBoundingClientRect();
+            const rect = button.getBoundingClientRect();
 
-    if (e.type.startsWith("touch")) {
-        offsetX = e.touches[0].clientX - rect.left;
-        offsetY = e.touches[0].clientY - rect.top;
-    } else {
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-    }
+            if (e.type.startsWith("touch")) {
+                offsetX = e.touches[0].clientX - rect.left;
+                offsetY = e.touches[0].clientY - rect.top;
+            } else {
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+            }
 
-    button.style.cursor = "grabbing";
-    button.style.opacity = "0.5";
-}
+            button.style.cursor = "grabbing";
+            button.style.opacity = "0.5";
+        }
 
-/* MOVE */
-function onDrag(e) {
-    if (!isDragging) return;
-    e.preventDefault();
+        /* MOVE */
+        function onDrag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
 
-    let clientX, clientY;
+            let clientX, clientY;
 
-    if (e.type.startsWith("touch")) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-    } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-    }
+            if (e.type.startsWith("touch")) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
 
-    let newX = clientX - offsetX;
-    let newY = clientY - offsetY;
+            let newX = clientX - offsetX;
+            let newY = clientY - offsetY;
 
-    const maxX = window.innerWidth - button.offsetWidth;
-    const maxY = window.innerHeight - button.offsetHeight;
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
 
-    newX = Math.max(0, Math.min(newX, maxX));
-    newY = Math.max(0, Math.min(newY, maxY));
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
 
-    button.style.left = newX + "px";
-    button.style.top  = newY + "px";
-    button.style.transform = "translate(0, 0)";
-}
+            button.style.left = newX + "px";
+            button.style.top = newY + "px";
+            button.style.transform = "translate(0, 0)";
+        }
 
-/* END */
-function endDrag() {
-    button.style.opacity = "1";
-    button.style.cursor = "grab";
+        /* END */
+        function endDrag() {
+            button.style.opacity = "1";
+            button.style.cursor = "grab";
 
-    isDragging = false;
-    handleClickOrDrag();
+            isDragging = false;
+            handleClickOrDrag();
 
-    setTimeout(() => {
-        button.style.opacity = "0.5";
-    }, 2_000);
-}
+            setTimeout(() => {
+                button.style.opacity = "0.5";
+            }, 2_000);
+        }
 
-/* EVENTOS MOUSE */
-button.addEventListener("mousedown", startDrag);
-window.addEventListener("mousemove", onDrag);
-window.addEventListener("mouseup", endDrag);
+        /* EVENTOS MOUSE */
+        button.addEventListener("mousedown", startDrag);
+        window.addEventListener("mousemove", onDrag);
+        window.addEventListener("mouseup", endDrag);
 
-/* EVENTOS TOUCH */
-button.addEventListener("touchstart", startDrag);
-window.addEventListener("touchmove", onDrag, { passive: false });
-window.addEventListener("touchend", endDrag);
-</script>
+        /* EVENTOS TOUCH */
+        button.addEventListener("touchstart", startDrag);
+        window.addEventListener("touchmove", onDrag, { passive: false });
+        window.addEventListener("touchend", endDrag);
+    </script>
 
-<script>
-document.addEventListener("click", e => {
-    const header = e.target.closest(".collapse-header");
-    if (!header) return;
+    <script>
+        document.addEventListener("click", e => {
+            const header = e.target.closest(".collapse-header");
+            if (!header) return;
 
-    const collapse = header.parentElement;
-    const content = collapse.querySelector(".collapse-content");
+            const collapse = header.parentElement;
+            const content = collapse.querySelector(".collapse-content");
 
-    collapse.classList.toggle("open");
+            collapse.classList.toggle("open");
 
-    if (collapse.classList.contains("open")) {
-        content.style.maxHeight = content.scrollHeight + "px";
-    } else {
-        content.style.maxHeight = "0px";
-    }
+            if (collapse.classList.contains("open")) {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                content.style.maxHeight = "0px";
+            }
 
-    // 🔁 Recalcula o pai (suporta collapse dentro de collapse)
-    let parent = collapse.parentElement.closest(".collapse");
-    while (parent) {
-        const parentContent = parent.querySelector(".collapse-content");
-        parentContent.style.maxHeight = parentContent.scrollHeight + "px";
-        parent = parent.parentElement.closest(".collapse");
-    }
-});
-</script>
+            // 🔁 Recalcula o pai (suporta collapse dentro de collapse)
+            let parent = collapse.parentElement.closest(".collapse");
+            while (parent) {
+                const parentContent = parent.querySelector(".collapse-content");
+                parentContent.style.maxHeight = parentContent.scrollHeight + "px";
+                parent = parent.parentElement.closest(".collapse");
+            }
+        });
+    </script>
 
 </body>
+
 </html>
